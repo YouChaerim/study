@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>CardList</h1>
+    <br>
+    <a href="/card/cardregister">카드 등록</a>
+    <br>
+    <table>
+        <tr>
+            <th>카드 번호</th>
+            <th>유효 기간</th>
+            <th>카드 회사</th>
+        </tr>
+        <tr th:each="card : ${cardList}">
+            <td th:text="${card.getCard_num}"></td>
+            <td th:text="${card.getCard_valid}"></td>
+            <td th:text="${card.getCard_company}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

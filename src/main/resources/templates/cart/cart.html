@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>장바구니 목록</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>장바구니</h1>
+
+    <div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>책 ID</th>
+                    <th>책 제목</th>
+                    <th>가격</th>
+                    <th>수량</th>
+                    <th>총 금액</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cartItems}" class="item-row">
+                    <td th:text="${item.book_id}"></td>
+                    <td th:text="${item.book_name}"></td>
+                    <td th:text="${item.price}" class="price-cell" th:data-price="${item.price}"></td>
+                    <td>
+                        <form action="/cart/updateQuantity" method="post">
+                            <input type="hidden" name="book_id" th:value="${item.book_id}">
+                            <input type="number" name="quantity" class="quantity-input" th:value="${item.quantity}" min="1" step="1" th:max="${item.stock}" required onchange="this.form.submit()">
+                        </form>
+                    </td>
+                    <td>
+                        <span th:text="${item.price * item.quantity} + ' 원'"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        <h3>총 가격: <span id="total-price" th:text="${totalPrice} + ' 원'"></span></h3>
+
+        <button class="order-btn" type="button" onclick="location.href='/order/cartorder'">구매하기</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cart Order</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        select {
+            width: 300px; /* 드롭다운 목록의 너비 조정 */
+            padding: 10px; /* 내부 패딩을 추가하여 크기 증가 */
+            font-size: 16px; /* 폰트 크기 증가 */
+            margin-bottom: 20px; /* 드롭다운 목록 사이 간격 추가 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form action="/order/cartorder/add" method="post">
+        <h2>장바구니에서 주문하기</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>책 제목</th>
+                <th>수량</th>
+                <th>가격</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td th:text="${item.book_name}" ></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price * item.quantity}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <label for="address">주소 선택:</label>
+        <select id="address" name="postal_code">
+            <option th:each="address : ${addresses}" th:value="${address.postal_code}" th:text="${address.basic_address}"></option>
+        </select>
+        <label for="card">카드 선택:</label>
+        <select id="card" name="card_number">
+            <option th:each="card : ${cards}" th:value="${card.card_num}" th:text="${card.card_company}"></option>
+        </select>
+        <h3>총 가격: <span th:text="${totalPrice} + ' 원'"></span></h3>
+        <input type="hidden" name="price" th:value="${totalPrice}">
+        <button type="submit">주문하기</button>
+    </form>
+</div>
+</body>
+
+</html>

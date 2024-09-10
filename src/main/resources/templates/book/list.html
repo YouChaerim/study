@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>BookList</h1>
+    <div class="user-info">
+        <span th:text="'환영합니다, ' + ${user_id} + '님'"></span>
+        <a href="/users/logout">로그아웃</a>
+    </div>
+    <br>
+    <p>
+        <a href="/cart/cart">장바구니</a>
+        <a href="/address/addresslist">배송지 관리하기</a>
+        <a href="/card/cardlist">카드 정보</a>
+        <a href="/order/orderlist">주문목록</a>
+        <a href="/coupon/couponlist">쿠폰</a>
+    </p>
+    <br>
+    <table>
+        <tr>
+            <th>제목</th>
+            <th>가격</th>
+            <th>남은 수량</th>
+        </tr>
+        <tr th:each="book : ${bookList}">
+            <td><a th:href="@{/book/detail/{book_id}(book_id = ${book.book_id})}" th:text="${book.getBook_name()}"></a></td>
+            <td th:text="${book.getPrice()}"></td>
+            <td th:text="${book.getStock()}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

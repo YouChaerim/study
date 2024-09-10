@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 화면 전체 높이 사용 */
+            margin: 0; /* 기본 마진 제거 */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center; /* 텍스트 중앙 정렬 */
+        }
+        .cart-btn, .buy-btn {
+            margin-top: 10px; /* 버튼 사이의 간격을 추가 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form id="addToCart" action="/cart/add" method="post">
+        <div th:if="${book}">
+            <h2 th:text="${book.book_name}">책 제목</h2>
+            <p>가격: <span th:text="${book.price}">가격</span> 원</p>
+            <input type="hidden" name="book_id" th:value="${book.book_id}">
+            <input type="number" name="quantity" value="1" min="1" step="1" th:max="${book.stock}" required>
+        </div>
+        <button class="cart-btn" type="submit">장바구니 담기</button>
+        <button class="buy-btn" type="button" th:attr="data-book-id=${book.book_id}" onclick="buyBook(this)">구매</button>
+    </form>
+</div>
+
+<script>
+    function buyBook(button) {
+        const book_id = button.getAttribute('data-book-id');
+        const quantity = document.querySelector('[name=quantity]').value;
+        console.log("Book ID:", book_id); // 로그 추가
+        window.location.href = `/order/order/${book_id}?quantity=${quantity}`;
+    }
+
+    document.getElementById('addToCart').onsubmit = function(event) {
+        event.preventDefault(); // 기본 폼 제출 동작 방지
+
+        const formData = new FormData(this); // 폼 데이터 가져오기
+
+        fetch(this.action, {
+            method: this.method,
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 성공적으로 추가된 경우 장바구니 목록 페이지로 리다이렉트
+                    window.location.href = '/cart/cart';
+                } else {
+                    alert('장바구니에 추가하는 데 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>

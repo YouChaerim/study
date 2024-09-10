@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>AddressList</h1>
+    <br>
+    <a href="/address/addressregister">주소 등록</a>
+    <br>
+    <table>
+        <tr>
+            <th>우편번호</th>
+            <th>기본 주소</th>
+            <th>상세 주소</th>
+        </tr>
+        <tr th:each="address : ${addressList}">
+            <td th:text="${address.postal_code}"></td>
+            <td th:text="${address.basic_address}"></td>
+            <td th:text="${address.detail_address}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
